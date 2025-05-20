@@ -8,15 +8,13 @@ ENV NPM_CONFIG_AUDIT=false
 # Set the working directory to n8n's app directory
 WORKDIR /usr/local/n8n
 
-# Switch to 'root' user temporarily for global installations if needed
+# Switch to 'root' user temporarily for installation
 USER root
 
-# Install pnpm globally (required by the custom node)
-RUN npm install -g pnpm
+# No need to install pnpm, it seems it's already there in the base image.
+# RUN npm install -g pnpm  <--- REMOVE THIS LINE
 
 # Install the custom node directly from GitHub using pnpm
-# This installs it locally into n8n's node_modules directory
-# We explicitly install it with pnpm as required by the node's preinstall script.
 RUN pnpm install https://github.com/idobe977/n8n-nodes-whatsapp-green-api.git#master
 
 # After installation, switch back to the 'node' user that n8n runs as
