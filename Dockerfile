@@ -1,34 +1,16 @@
 # Specify the base n8n image
-# We use a specific version for better stability and to allow copying files into it
-FROM n8nio/n8n:1.44.1
+# Use 'latest' for the most recent version, or a specific version like 1.44.1 for stability.
+# Let's stick to 'latest' for now to ensure we get any recent fixes unless issues arise.
+FROM n8nio/n8n:latest
 
-# Set the working directory inside the container
+# Set the working directory inside the container (this is usually already done by n8n image, but good practice)
 WORKDIR /usr/local/n8n
 
-# Copy package.json and package-lock.json (if exists)
-# The "." at the end of COPY means copy to the current WORKDIR
-COPY package.json .
-# If you ever run `npm install` locally and get a package-lock.json, uncomment the next line
-# COPY package-lock.json .
+# No need for custom npm install or package.json copying here
+# The custom node will be loaded via NODE_EXTRA_PACKAGES environment variable
 
-# Install production dependencies (including custom nodes)
-# This command uses the node_modules from the base image and adds ours.
-# We use npm ci for clean install, but npm install should also work.
-RUN npm install --omit=dev
-
-# It's good practice to ensure n8n's executable is globally available
-# by linking it or adding its bin directory to PATH.
-# However, the base n8n image usually handles this.
-# The issue might be that a previous `npm install` messed up the PATH.
-# Let's ensure n8n's CLI is linked.
-# (Optional, but can help if the command is not found)
-RUN npm link n8n
-
-# No need for EXPOSE and CMD as the base image usually defines an ENTRYPOINT
-# that handles starting n8n. If we override it, we can break things.
-# We remove these lines.
-# EXPOSE 5678
-# CMD ["n8n", "start"]
+# EXPOSE is usually handled by the base image
+# CMD is usually handled by the base image's ENTRYPOINT
 
 # The base image already has an ENTRYPOINT defined, which will start n8n.
-# Our modifications are mainly for adding nodes, not changing how n8n starts.
+# Our custom node will be loaded via environment variables.
