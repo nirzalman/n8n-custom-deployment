@@ -4,7 +4,5 @@
   "description": "Custom n8n deployment with community nodes",
   "dependencies": {
     "n8n-nodes-whatsapp-green-api": "^1.0.0"
-    // Add other custom nodes here, for example:
-    // "n8n-nodes-other-node": "^1.0.0"
   }
 }
