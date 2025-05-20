@@ -1,8 +1,0 @@
-{
-  "name": "n8n-custom-deployment",
-  "version": "1.0.0",
-  "description": "Custom n8n deployment with community nodes",
-  "dependencies": {
-    "n8n-nodes-green-api": "^1.0.0"  
-  }
-}

@@ -8,17 +8,13 @@ ENV NPM_CONFIG_AUDIT=false
 # Set the working directory inside the container
 WORKDIR /usr/local/n8n
 
-# Copy package.json and package-lock.json (if exists)
-# The "." at the end of COPY means copy to the current WORKDIR
-COPY package.json .
-# If you ever run `npm install` locally and get a package-lock.json, uncomment the next line
-# COPY package-lock.json .
-
-# Install production dependencies (including custom nodes)
-# We use npm ci for a clean install, it requires package-lock.json
-# If you don't have package-lock.json, use 'npm install --omit=dev'
-# Let's try with npm install first, it's more forgiving.
-RUN npm install --omit=dev
+# *** NEW APPROACH: Install custom node directly from GitHub ***
+# This requires Git to be available in the image, which it usually is.
+# Replace 'idobe977/n8n-nodes-whatsapp-green-api' with the actual GitHub user/repo.
+# We explicitly install it globally so n8n can find it.
+# n8n uses 'npm install -g <package>' for its custom nodes
+# Let's verify the actual node name and path: n8n-nodes-whatsapp-green-api
+RUN npm install -g https://github.com/idobe977/n8n-nodes-whatsapp-green-api.git#master
 
 # Ensure n8n is linked as an executable globally after custom node installation
 # This addresses the "command n8n not found" error if npm install somehow breaks it
