@@ -4,16 +4,14 @@ FROM n8nio/n8n:latest
 # Set the working directory inside the container
 WORKDIR /usr/local/n8n
 
-# Install custom community nodes (replace with your actual node names)
-# You can add multiple lines for different nodes
-# For example, if you want to install 'n8n-nodes-base' and 'n8n-nodes-google-sheets'
-# Use 'npm install <package-name>'
-#
-# Example:
-RUN npm install n8n-nodes-whatsapp-green-api@latest
+# Copy package.json and package-lock.json (if exists) to the working directory
+COPY package.json .
+# If you ever run `npm install` locally and get a package-lock.json, uncomment the next line
+# COPY package-lock.json .
 
-# You might need to rebuild n8n's dependencies if you install many nodes
-# RUN npm rebuild
+# Install production dependencies (including custom nodes)
+# The --omit=dev flag ensures only production dependencies are installed
+RUN npm install --omit=dev
 
 # Expose the port n8n runs on
 EXPOSE 5678
